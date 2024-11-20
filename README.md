@@ -17,7 +17,7 @@
 `git clone https://github.com/your-username/Mikrotik-VPN-Back-to-home-WEB-panel.git`
 
 
-2. **Отредактируйте const.py**
+**Отредактируйте const.py**
 
 ## Зависимости
 
@@ -25,7 +25,7 @@
 
 - `routeros_ssh_connector`: Библиотека для подключения к устройству Mikrotik через SSH.
 - `gradio`: Библиотека для создания веб-интерфейсов.
-- `Python 3.10.0`
+- `Python 3.10.0` или выше
 
 ## Использование
 
