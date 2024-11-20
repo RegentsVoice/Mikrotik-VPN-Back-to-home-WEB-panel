@@ -12,15 +12,10 @@
 
 ## Установка
 
-1. **Клонируйте репозиторий**:
+**Клонируйте репозиторий**:
     ```sh
     git clone https://github.com/your-username/Mikrotik-VPN-Back-to-home-WEB-panel.git
     cd Mikrotik-VPN-Back-to-home-WEB-panel
-    ```
-
-2. **Установите зависимости**:
-    ```sh
-    pip install -r requirements.txt
     ```
 
 2. **Отредактируйте const.py**
