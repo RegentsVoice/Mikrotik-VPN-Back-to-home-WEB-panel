@@ -4,7 +4,7 @@ import logging
 
 # Настройка логирования
 logging.basicConfig(
-    level=logging.INFO,  # Уровень логирования: INFO
+    level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[
         logging.FileHandler("watchdog.log", encoding="utf-8"),
@@ -16,23 +16,18 @@ logging.basicConfig(
 SCRIPT_PATH = "main.py"
 
 def run_script():
-    # Запуск основной тушки
     process = subprocess.Popen(["python", SCRIPT_PATH])
     logging.info(f"Приложение запущено с PID {process.pid}")
     return process
 
 def watchdog():
-    #Следит за вторым скриптом и перезапускает его при падении
-    process = run_script()  # Запускаем скрипт первый раз
-    
+    process = run_script()
     try:
         while True:
-            # Проверяем, работает ли процесс
-            if process.poll() is not None:  # Если процесс завершился
+            if process.poll() is not None:
                 logging.warning(f"Оно упало. Поднимаем...")
-                process = run_script()  # Перезапуск
-            
-            time.sleep(5)  # Проверяем состояние каждые 5 секунд
+                process = run_script()
+            time.sleep(5)
     except KeyboardInterrupt:
         logging.info("Остоновка watchdog...")
         if process and process.poll() is None:
