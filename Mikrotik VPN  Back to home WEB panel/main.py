@@ -3,15 +3,12 @@ from const import *
 from panelsetting import *
 import re, random, string, tempfile, os, signal, logging
 
-# отключаем сборку статистики и проверку обновлений Gradio(Обязательно до инита градио)
 os.environ["GRADIO_ANALYTICS_ENABLED"] = "False"
 import gradio as gr
 
-
-
 # Настройка логирования
 logging.basicConfig(
-    level=logging.INFO,  # Уровень логирования: INFO
+    level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[
         logging.FileHandler("watchdog.log", encoding="utf-8"),
@@ -21,12 +18,8 @@ logging.basicConfig(
 
 # Функция для автоматического добавления дефисов в дату
 def format_date(date_str):
-    # Убираем все символы, не являющиеся цифрами
     date_str = ''.join(c for c in date_str if c.isdigit())
-    
-    # Проверка длины введённой строки (должна быть длиной 8 символов)
     if len(date_str) == 8:
-        # Добавляем дефисы в правильные позиции
         return f"{date_str[:4]}-{date_str[4:6]}-{date_str[6:]}"
     return date_str
 
@@ -55,30 +48,26 @@ def get_user_list():
         router.connect(RouteIP, RouteUsername, RoutePassword, RoutePort)
         response = router.send_command("/ip/cloud/back-to-home-users print")
         router.disconnect()
-
         users = []
-        comment = ""  # Изначально комментарий пустой
-        user_id = None  # Изначально номер пользователя пустой
+        comment = ""  
+        user_id = None  
 
         for line in response.split("\n"):
             # Если строка начинается с ';;;', то это комментарий
             if line.lstrip().startswith(";;;"):
-                comment = line.lstrip()[4:].strip()  # Сохраняем комментарий без ';;;'
+                comment = line.lstrip()[4:].strip() 
 
             # Если строка содержит данные пользователя (начинается с номера)
             elif line.lstrip().startswith(tuple(str(i) for i in range(10))):
                 parts = line.split()
-                user_id = parts[0]  # Номер пользователя (первая часть строки)
-                flag = parts[1]  # 'A' или 'X'
-                name = parts[2]  # Имя пользователя
-                expires = parts[3]  # Дата истечения или "never"
+                user_id = parts[0]
+                flag = parts[1]
+                name = parts[2]
+                expires = parts[3]
                 expires = "Никогда" if expires == "never" else expires
-
-                # Добавляем запись с номером пользователя, именем, статусом, сроком действия и комментарием
                 users.append([user_id, name, "Активен" if flag == "A" else "Деактивирован", comment, expires])
                 comment = ""  # Сбрасываем комментарий для следующего пользователя
-
-        return users  # Возвращаем список пользователей с номером и подразделением
+        return users
     except Exception as e:
         logging.info(f"Ошибка при выводе списка пользователей {str(e)}")
         return [[f"Что-то пошло не так: {str(e)}"]]
@@ -89,7 +78,6 @@ def get_user_list():
 def delete_user_by_number(user_number):
     if not user_number.isdigit():
         return "Укажите корректный номер пользователя."
-
     command = f"/ip/cloud/back-to-home-users remove numbers={user_number}"
     router = MikrotikDevice()
     try:
@@ -108,22 +96,15 @@ def delete_user_by_number(user_number):
 def export_user_config(user_number):
     if not user_number:
         return "Введите номер пользователя."
-    
     command = f"/ip/cloud/back-to-home-users show-client-config number={user_number}"
     router = MikrotikDevice()
     try:
         router.connect(RouteIP, RouteUsername, RoutePassword, RoutePort)
         response = router.send_command(command)
         router.disconnect()
-
-        # Разбиваем вывод на строки
         lines = response.splitlines()
-
-        # Найдём начало и конец диапазона
         start_idx = next((i for i, line in enumerate(lines) if line.startswith("[Interface]")), None)
         end_idx = next((i for i, line in enumerate(lines) if line.startswith("qr:")), None)
-
-        # Извлекаем строки между [Interface] и qr:
         config_lines = lines[start_idx:end_idx]
         return "\n".join(config_lines)
     except Exception as e:
@@ -148,7 +129,6 @@ def save_config_to_file(config_content):
 def toggle_user_state(user_number, action):
     if not user_number.isdigit():
         return "Укажите корректный номер пользователя."
-    
     command = f"/ip/cloud/back-to-home-users {'enable' if action == 'Activate' else 'disable'} numbers={user_number}"
     router = MikrotikDevice()
     try:
@@ -163,14 +143,11 @@ def toggle_user_state(user_number, action):
     finally:
         del router
 
-
 # Функция обновления настроек
 def update_settings(ip=None, port=None, password=None):
     try:
         with open("panelsetting.py", "r") as file:
             lines = file.readlines()
-
-        # Сохраняем текущие значения
         current_settings = {"ip": None, "port": None, "password": None}
         for line in lines:
             if line.startswith("GServerIp"):
@@ -179,8 +156,6 @@ def update_settings(ip=None, port=None, password=None):
                 current_settings["port"] = int(re.search(r"(\d+)", line).group(1))
             elif line.startswith("GPassword"):
                 current_settings["password"] = re.search(r'"(.*?)"', line).group(1)
-
-        # Обновляем только если передано новое значение
         for i, line in enumerate(lines):
             if line.startswith("GServerIp"):
                 new_ip = ip if ip else current_settings["ip"]
@@ -191,8 +166,6 @@ def update_settings(ip=None, port=None, password=None):
             elif line.startswith("GPassword"):
                 new_password = password if password else current_settings["password"]
                 lines[i] = f'GPassword = "{new_password}"\n'
-
-        # Перезаписываем файл
         with open("panelsetting.py", "w") as file:
             file.writelines(lines)
 
@@ -201,7 +174,7 @@ def update_settings(ip=None, port=None, password=None):
     except Exception as e:
         logging.info(f"Ошибка при изменении настроек приложения")
         return f"Ошибка при обновлении настроек: {e}"
-
+# Функция остановки прилржения        
 def stopapp():
     os.kill(os.getpid(),
     signal.SIGTERM)
@@ -217,62 +190,43 @@ def settings_interface():
             save_button = gr.Button("Сохранить настройки")
             restart_button = gr.Button("Перезапустить приложение")
         status_output = gr.Textbox(label="Результат", interactive=False)
-
-        # Сохранение настроек
         save_button.click(
             update_settings,
             inputs=[ip_input, port_input, password_input],
             outputs=[status_output]
         )
-        # Перезапуск приложения
         restart_button.click(fn=stopapp)
         with gr.Blocks():
             gr.HTML("<p style='text-align:center;'>© 2024 Regent'sVoice.</p>")
     return settings_tab
 
-
-# Создание вкладки "Настройки"
 settings_tab = settings_interface()
 
 # Вкладка для управления пользователями
 with gr.Blocks() as manage_tab:
     with gr.Column():
-        # Кнопка для загрузки списка пользователей
         load_users_button = gr.Button("Получить пользователей")
         user_list_output = gr.DataFrame(label="Список пользователей", headers=["Номер", "Имя", "Статус", "Подразделение", "Дата истечения"])
         load_users_button.click(fn=get_user_list, inputs=[], outputs=user_list_output)
-# Разделитель
         gr.Markdown("<hr style='border: 1px solid #ccc;'>")
-
-# Раздел для переключения состояния пользователя
         toggle_user_input = gr.Textbox(label="Номер пользователя для переключения состояния", placeholder="Введите номер пользователя")
         toggle_action = gr.Radio(label="Действие", choices=["Activate", "Deactivate"], value="Activate")
         toggle_button = gr.Button("Применить действие")
         toggle_output = gr.Textbox(label="Результат переключения состояния")
         toggle_button.click(fn=toggle_user_state, inputs=[toggle_user_input, toggle_action], outputs=toggle_output)
-
-# Разделитель
         gr.Markdown("<hr style='border: 1px solid #ccc;'>")
-
-# Раздел для удаления пользователя по номеру
         delete_user_input = gr.Textbox(label="Номер пользователя для удаления", placeholder="Введите номер пользователя")
         delete_button = gr.Button("Удалить пользователя")
         delete_output = gr.Textbox(label="Результат удаления")
         delete_button.click(fn=delete_user_by_number, inputs=[delete_user_input], outputs=delete_output)
-
-# Разделитель
         gr.Markdown("<hr style='border: 1px solid #ccc;'>")
-
-# Выгрузка конфигурации
         gr.Markdown("### Выгрузка конфигурации")
         user_number_input = gr.Textbox(label="Номер пользователя для выгрузки конфигурации", placeholder="Введите номер пользователя")
         export_button = gr.Button("Выгрузить конфигурацию")
         config_output = gr.Textbox(label="Конфигурация", interactive=False, lines=10)
         export_button.click(fn=export_user_config, inputs=[user_number_input], outputs=config_output)
-
         save_button = gr.Button("Сохранить конфигурацию")
         download_file = gr.File(label="Скачайте файл конфигурации")
-
         save_button.click(
             fn=save_config_to_file,
             inputs=[config_output],
@@ -288,20 +242,13 @@ with gr.Blocks() as register_tab:
         ExpiresDate = gr.Textbox(label="Дата деактивации", placeholder="Год-месяц-день")
         UserLocation = gr.Textbox(label="Расположение пользователя", placeholder="Введите расположение пользователя латиницей")
         UserName = gr.Textbox(label="Имя пользователя", placeholder="Введите имя пользователя латиницей")
-        
-        # Кнопка для регистрации
         register_button = gr.Button("Зарегистрировать пользователя")
-        
-        # Вывод результата
         result_output = gr.Textbox(label="Результат регистрации", interactive=False)
-        
-        # Действие при нажатии на кнопку
         register_button.click(
             fn=register_user,
             inputs=[ExpiresDate, UserLocation, UserName],
             outputs=result_output
         )
-        # Автоматическое добавление дефисов в дату
         ExpiresDate.change(fn=format_date, inputs=ExpiresDate, outputs=ExpiresDate)
         with gr.Blocks():
             gr.HTML("<p style='text-align:center;'>© 2024 Regent'sVoice.</p>")
@@ -315,28 +262,19 @@ def generate_password(length, use_uppercase, use_numbers, use_special, exclude_s
         characters += string.digits
     if use_special:
         characters += string.punctuation
-
-    # Список символов, которые нужно исключить
     exclude_chars = "~'\"/\\|.,-oO;:<>{}[]^`"
     if exclude_special:
         characters = ''.join(c for c in characters if c not in exclude_chars)
-
     if length <= 0:
         return "Длина пароля должна быть больше 0"
-
     password = ''.join(random.choice(characters) for _ in range(length))
-
     logging.info(f"Сгенерирован пароль")
     return password
 
 # Интерфейс для генератора паролей
 with gr.Blocks() as pas_tab:
     with gr.Column():
-
-        # Поле для выбора длины пароля
         length = gr.Slider(label="Длина пароля", minimum=6, maximum=32, value=8, step=1)
-
-        # Чекбоксы для дополнительных настроек
         use_uppercase = gr.Checkbox(label="Включить заглавные буквы", value=True)
         use_numbers = gr.Checkbox(label="Включить цифры", value=True)
         use_special = gr.Checkbox(label="Включить специальные символы", value=True)
@@ -351,13 +289,11 @@ with gr.Blocks() as pas_tab:
     with gr.Blocks():
         gr.HTML("<p style='text-align:center;'>© 2024 Regent'sVoice.</p>")
 
-
 # Основной интерфейс
 app = gr.TabbedInterface(
     interface_list=[register_tab, manage_tab, pas_tab, settings_tab],
     tab_names=["Регистрация пользователей", "Управление пользователями", "Генератор паролей", "Настройки"]
 )
-
 
 app.css = """
     footer {display: none !important;}
