@@ -14,9 +14,8 @@
 
 **Клонируйте репозиторий**:
 
-    ```sh
-    git clone https://github.com/your-username/Mikrotik-VPN-Back-to-home-WEB-panel.git
-    ```
+`git clone https://github.com/your-username/Mikrotik-VPN-Back-to-home-WEB-panel.git`
+
 
 2. **Отредактируйте const.py**
 
