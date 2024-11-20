@@ -50,7 +50,7 @@
 
 ## Лицензия
 
-Этот проект лицензирован под [MIT License]([LICENSE](https://github.com/VoiceRegent/Mikrotik-VPN-Back-to-home-WEB-panel/blob/main/LICENSE.md)).
+Этот проект лицензирован под ([MIT License](https://github.com/VoiceRegent/Mikrotik-VPN-Back-to-home-WEB-panel/blob/main/LICENSE.md))
 
 ## Автор
 
