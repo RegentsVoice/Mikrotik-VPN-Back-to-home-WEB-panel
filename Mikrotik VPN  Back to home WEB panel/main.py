@@ -2,9 +2,10 @@ from routeros_ssh_connector import MikrotikDevice
 from const import *
 from panelsetting import *
 import re, random, string, tempfile, os, signal, logging
-
-os.environ["GRADIO_ANALYTICS_ENABLED"] = "False"
 import gradio as gr
+
+# Отключаем сбор статистики на стороне gradio
+os.environ["GRADIO_ANALYTICS_ENABLED"] = "False"
 
 # Настройка логирования
 logging.basicConfig(
