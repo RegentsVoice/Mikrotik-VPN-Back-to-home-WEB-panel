@@ -292,7 +292,8 @@ with gr.Blocks() as pas_tab:
 # Основной интерфейс
 app = gr.TabbedInterface(
     interface_list=[register_tab, manage_tab, pas_tab, settings_tab],
-    tab_names=["Регистрация пользователей", "Управление пользователями", "Генератор паролей", "Настройки"]
+    tab_names=["Регистрация пользователей", "Управление пользователями", "Генератор паролей", "Настройки"],
+    title="MikroTik WEB"
 )
 
 app.css = """
