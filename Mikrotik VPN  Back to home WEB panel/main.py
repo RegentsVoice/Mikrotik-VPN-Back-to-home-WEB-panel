@@ -119,7 +119,7 @@ def save_config_to_file(config_content):
         raise ValueError("Конфигурация пуста.")
 
     # Создаём временный файл
-    temp_file = tempfile.NamedTemporaryFile(delete=False, prefix="BASYS-VPN-", suffix=".conf", mode="w", encoding="utf-8")
+    temp_file = tempfile.NamedTemporaryFile(delete=False, prefix="WG-VPN-", suffix=".conf", mode="w", encoding="utf-8")
     temp_file.write(config_content)
     temp_file.close()
     logging.info(f"Создан файл конфигурации Wireguard")
@@ -208,18 +208,24 @@ with gr.Blocks() as manage_tab:
         load_users_button = gr.Button("Получить пользователей")
         user_list_output = gr.DataFrame(label="Список пользователей", headers=["Номер", "Имя", "Статус", "Подразделение", "Дата истечения"])
         load_users_button.click(fn=get_user_list, inputs=[], outputs=user_list_output)
+        
         gr.Markdown("<hr style='border: 1px solid #ccc;'>")
+        
         toggle_user_input = gr.Textbox(label="Номер пользователя для переключения состояния", placeholder="Введите номер пользователя")
         toggle_action = gr.Radio(label="Действие", choices=["Activate", "Deactivate"], value="Activate")
         toggle_button = gr.Button("Применить действие")
         toggle_output = gr.Textbox(label="Результат переключения состояния")
         toggle_button.click(fn=toggle_user_state, inputs=[toggle_user_input, toggle_action], outputs=toggle_output)
+        
         gr.Markdown("<hr style='border: 1px solid #ccc;'>")
+        
         delete_user_input = gr.Textbox(label="Номер пользователя для удаления", placeholder="Введите номер пользователя")
         delete_button = gr.Button("Удалить пользователя")
         delete_output = gr.Textbox(label="Результат удаления")
         delete_button.click(fn=delete_user_by_number, inputs=[delete_user_input], outputs=delete_output)
+        
         gr.Markdown("<hr style='border: 1px solid #ccc;'>")
+        
         gr.Markdown("### Выгрузка конфигурации")
         user_number_input = gr.Textbox(label="Номер пользователя для выгрузки конфигурации", placeholder="Введите номер пользователя")
         export_button = gr.Button("Выгрузить конфигурацию")
