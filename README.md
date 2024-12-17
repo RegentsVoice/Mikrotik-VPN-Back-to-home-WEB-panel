@@ -13,7 +13,7 @@
 
 **Клонируйте репозиторий**:
 
-`git clone https://github.com/your-username/Mikrotik-VPN-Back-to-home-WEB-panel.git`
+`git clone https://github.com/RegentsVoice/Mikrotik-VPN-Back-to-home-WEB-panel.git`
 
 
 **Отредактируйте** `const.py`
