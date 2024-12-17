@@ -16,7 +16,7 @@
 `git clone https://github.com/your-username/Mikrotik-VPN-Back-to-home-WEB-panel.git`
 
 
-**Отредактируйте const.py**
+**Отредактируйте** `const.py`
 
 ## Зависимости
 
