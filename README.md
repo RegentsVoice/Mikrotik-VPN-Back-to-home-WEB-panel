@@ -16,7 +16,7 @@
 `git clone https://github.com/RegentsVoice/Mikrotik-VPN-Back-to-home-WEB-panel.git`
 
 
-**Отредактируйте** `const.py`
+**Отредактируйте** `mikrotik_const.py`
 
 ## Зависимости
 
@@ -30,9 +30,10 @@
 
 1. **Запустите приложение**:
  
-    `RUN.BAT`
+    `run.bat` для Windows
+    `run_web_ui.py` для MacOS и Linux
 
-2. **Введите логин и пароль в открывшемся окне браузера**:
+3. **Введите логин и пароль в открывшемся окне браузера**:
 
     Логин: `Admin`
     Пароль: `P@ssw0rd`
