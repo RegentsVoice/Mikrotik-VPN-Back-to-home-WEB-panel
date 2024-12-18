@@ -1,2 +1,2 @@
 @echo off
-start python startscr.py
+start python run_web_ui.py
