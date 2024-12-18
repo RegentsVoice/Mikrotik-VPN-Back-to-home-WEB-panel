@@ -1,6 +1,6 @@
 from routeros_ssh_connector import MikrotikDevice
-from const import *
-from panelsetting import *
+from mikrotik_const import *
+from web_ui_const import *
 import re, random, string, tempfile, os, signal, logging
 import gradio as gr
 
