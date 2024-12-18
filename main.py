@@ -125,7 +125,7 @@ def toggle_user_state(user_number, action):
 
 def update_settings(ip=None, port=None, password=None):
     try:
-        with open("panelsetting.py", "r") as file:
+        with open("web_ui_const.py", "r") as file:
             lines = file.readlines()
         current_settings = {"ip": None, "port": None, "password": None}
         for line in lines:
@@ -145,7 +145,7 @@ def update_settings(ip=None, port=None, password=None):
             elif line.startswith("GPassword"):
                 new_password = password if password else current_settings["password"]
                 lines[i] = f'GPassword = "{new_password}"\n'
-        with open("panelsetting.py", "w") as file:
+        with open("web_ui_const.py", "w") as file:
             file.writelines(lines)
 
         logging.info(f"Изменены настройки приложения")
