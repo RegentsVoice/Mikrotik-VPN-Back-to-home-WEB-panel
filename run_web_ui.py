@@ -2,7 +2,7 @@ import subprocess
 import time
 import logging
 import webbrowser
-from mikritik_const import GServerIp, GServerPort
+from wbu_ui_const import GServerIp, GServerPort
 
 logging.basicConfig(
     level=logging.INFO,
