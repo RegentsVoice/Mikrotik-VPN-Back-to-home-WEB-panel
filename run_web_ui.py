@@ -2,7 +2,7 @@ import subprocess
 import time
 import logging
 import webbrowser
-from wbu_ui_const import GServerIp, GServerPort
+import importlib
 
 logging.basicConfig(
     level=logging.INFO,
@@ -15,7 +15,7 @@ logging.basicConfig(
 
 SCRIPT_PATH = "main.py"
 
-def run_script():
+def run_script(GServerIp, GServerPort):
     process = subprocess.Popen(["python", SCRIPT_PATH])
     logging.info(f"Приложение запущено с PID {process.pid}")
 
@@ -26,15 +26,21 @@ def run_script():
     return process
 
 def watchdog():
-    process = run_script()
+    import web_ui_const
+    GServerIp = web_ui_const.GServerIp
+    GServerPort = web_ui_const.GServerPort
+    process = run_script(GServerIp, GServerPort)
 
     try:
         while True:
             if process.poll() is not None:
                 logging.warning(f"Оно упало. Поднимаем...")
-                process = run_script()
+                importlib.reload(web_ui_const)
+                GServerIp = web_ui_const.GServerIp
+                GServerPort = web_ui_const.GServerPort
+                process = run_script(GServerIp, GServerPort)
 
-            time.sleep(5) 
+            time.sleep(5)
     except KeyboardInterrupt:
         logging.info("Остоновка watchdog...")
         if process and process.poll() is None:
@@ -42,6 +48,6 @@ def watchdog():
             process.wait()
         logging.info("Watchdog остановлен.")
 
-if __name__ == "__main__":
-    logging.info("Запуск watchdog...")
-    watchdog()
+
+logging.info("Запуск watchdog...")
+watchdog()
