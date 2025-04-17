@@ -18,13 +18,10 @@ SCRIPT_PATH = "main.py"
 def run_script(GServerIp, GServerPort):
     process = subprocess.Popen(["python", SCRIPT_PATH])
     logging.info(f"Приложение запущено с PID {process.pid} Ожидайте открытия окна приложения")
-
     time.sleep (5)
-    
     url = f"http://{GServerIp}:{GServerPort}"
     logging.info(f"Открытие браузера с адресом: {url}")
     webbrowser.open(url)
-
     return process
 
 def watchdog():
