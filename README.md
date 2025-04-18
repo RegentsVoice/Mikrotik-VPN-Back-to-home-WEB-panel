@@ -27,13 +27,13 @@
 **Отредактируйте**:
 `mikrotik_const.py`
 
-RouteIP = "IP вашего устройства"
+`RouteIP` = "IP вашего устройства"
 
-RouteUsername = "Пользователь"
+`RouteUsername` = "Пользователь"
 
-RoutePassword = "Пароль"
+`RoutePassword` = "Пароль"
 
-RoutePort = "Порт"
+`RoutePort` = "Порт"
     
 
 ## Зависимости
