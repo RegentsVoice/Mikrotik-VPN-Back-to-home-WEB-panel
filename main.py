@@ -276,4 +276,4 @@ def connect_to_router():
         raise
 
 connect_to_router()
-app.launch(server_name=GServerIp, server_port=GServerPort, show_api=False, auth=(f"Admin", GPassword))
+app.launch(server_name=GServerIp, server_port=GServerPort, show_api=False, auth=(f"Admin", GPassword), favicon_path=".\Favicon.ico")
