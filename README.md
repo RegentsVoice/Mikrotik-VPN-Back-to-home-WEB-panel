@@ -22,6 +22,7 @@
 
 **Отредактируйте**:
 `mikrotik_const.py`
+
     RouteIP = "IP вашего устройства"
     RouteUsername = "Пользователь"
     RoutePassword = "Пароль"
