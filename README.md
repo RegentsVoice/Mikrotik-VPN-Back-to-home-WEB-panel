@@ -41,6 +41,7 @@
 Для запуска вам потребуется:
 
 - `Python 3.10.0`  **Внимание!!! Несовместим с Python 3.12+**
+- `RouterOS 7.19` Для использования версий младше измените `/ip/cloud/back-to-home-user` на `/ip/cloud/back-to-home-users`
 - `routeros_ssh_connector`: Библиотека для подключения к устройству Mikrotik через SSH.
 - `gradio`: Библиотека для создания веб-интерфейсов.
 
