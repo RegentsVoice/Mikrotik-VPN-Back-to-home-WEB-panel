@@ -37,9 +37,9 @@ def register_user(UserLocation, UserName, ExpiresYear, ExpiresMonth, ExpiresDay)
 
     try:
         if ExpiresDate:
-            command = f"/ip/cloud/back-to-home-users add allow-lan=yes comment={UserLocation} expires={ExpiresDate} name={UserName}"
+            command = f"/ip/cloud/back-to-home-user add allow-lan=yes comment={UserLocation} expires={ExpiresDate} name={UserName}"
         else:
-            command = f"/ip/cloud/back-to-home-users add allow-lan=yes comment={UserLocation} name={UserName}"
+            command = f"/ip/cloud/back-to-home-user add allow-lan=yes comment={UserLocation} name={UserName}"
         router.send_command(command)
         logging.info(f"Пользователь '{UserName}' зарегистрирован.")
         return f"Пользователь '{UserName}' Успешно зарегистрирован."
@@ -49,7 +49,7 @@ def register_user(UserLocation, UserName, ExpiresYear, ExpiresMonth, ExpiresDay)
 
 def get_user_list():
     try:
-        response = router.send_command("/ip/cloud/back-to-home-users print")
+        response = router.send_command("/ip/cloud/back-to-home-user print")
         users = []
         comment = ""
         user_id = None
@@ -76,7 +76,7 @@ def get_user_list():
 def delete_user_by_number(user_number):
     if not user_number.isdigit():
         return "Укажите корректный номер пользователя."
-    command = f"/ip/cloud/back-to-home-users remove numbers={user_number}"
+    command = f"/ip/cloud/back-to-home-user remove numbers={user_number}"
     try:
         router.send_command(command)
         logging.info(f"Пользователь с номером '{user_number}' удалён")
@@ -88,7 +88,7 @@ def delete_user_by_number(user_number):
 def export_user_config(user_number):
     if not user_number:
         return "Введите номер пользователя."
-    command = f"/ip/cloud/back-to-home-users show-client-config number={user_number}"
+    command = f"/ip/cloud/back-to-home-user show-client-config number={user_number}"
     try:
         response = router.send_command(command)
         lines = response.splitlines()
@@ -114,7 +114,7 @@ def save_config_to_file(config_content):
 def toggle_user_state(user_number, action):
     if not user_number.isdigit():
         return "Укажите корректный номер пользователя."
-    command = f"/ip/cloud/back-to-home-users {'enable' if action == 'Activate' else 'disable'} numbers={user_number}"
+    command = f"/ip/cloud/back-to-home-user {'enable' if action == 'Activate' else 'disable'} numbers={user_number}"
     try:
         router.send_command(command)
         logging.info(f"Пользователь с номером '{user_number}' {'активирован' if action == 'Activate' else 'деактивирован'}.")
