@@ -1,3 +1,5 @@
+# Поддержка текущей реализации проэкта прекращена
+
 # Mikrotik VPN Back to home WEB panel
 
 
