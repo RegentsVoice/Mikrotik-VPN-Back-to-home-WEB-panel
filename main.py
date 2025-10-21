@@ -21,13 +21,11 @@ def contains_cyrillic(text):
     return any(char in text for char in "абвгдеёжзийклмнопрстуфхцчшщъыьэюя")
 
 def parse_expires_days(expires_input):
-    """Парсит строку формата '+ X d' и возвращает дату истечения"""
     if not expires_input or not expires_input.strip():
         return ""
-    
+        
     expires_input = expires_input.strip().lower()
     
-    # Проверяем формат + X d
     match = re.match(r'^\+\s*(\d+)\s*d$', expires_input)
     if match:
         days = int(match.group(1))
