@@ -38,7 +38,7 @@ Mikrotik VPN Back-to-Home Web Panel — это веб-приложение дл�
    ```
 2. Установите зависимости:
    ```
-   pip install routeros_ssh_connector gradio
+   pip install -r requirements.txt
    ```
 3. Настройте параметры подключения в файле `mikrotik_const.py`:
    ```
@@ -55,7 +55,7 @@ Mikrotik VPN Back-to-Home Web Panel — это веб-приложение дл�
    FROM python:3.10-slim
    WORKDIR /app
    COPY . .
-   RUN pip install routeros_ssh_connector gradio
+   RUN pip install -r requirements.txt
    EXPOSE 7860
    CMD ["python", "run_web_ui.py"]
    ```
@@ -137,7 +137,7 @@ Mikrotik VPN Back-to-Home Web Panel is a web application for managing "Back to H
    ```
 2. Install dependencies:
    ```
-   pip install routeros_ssh_connector gradio
+   pip install -r requirements.txt
    ```
 3. Configure connection settings in `mikrotik_const.py`:
    ```
@@ -154,7 +154,7 @@ Mikrotik VPN Back-to-Home Web Panel is a web application for managing "Back to H
    FROM python:3.10-slim
    WORKDIR /app
    COPY . .
-   RUN pip install routeros_ssh_connector gradio
+   RUN pip install -r requirements.txt
    EXPOSE 7860
    CMD ["python", "run_web_ui.py"]
    ```
