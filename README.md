@@ -5,7 +5,7 @@
 
 # Mikrotik VPN Back-to-Home Web Panel
 
-Русский | English
+[English](#English) | [Русский](#Русский)
 
 ## Русский
 
