@@ -20,20 +20,28 @@ router = None
 def contains_cyrillic(text):
     return any(char in text for char in "абвгдеёжзийклмнопрстуфхцчшщъыьэюя")
 
-def register_user(UserLocation, UserName, ExpiresYear, ExpiresMonth, ExpiresDay):
+def parse_expires_days(expires_input):
+    """Парсит строку формата '+ X d' и возвращает дату истечения"""
+    if not expires_input or not expires_input.strip():
+        return ""
+    
+    expires_input = expires_input.strip().lower()
+    
+    # Проверяем формат + X d
+    match = re.match(r'^\+\s*(\d+)\s*d$', expires_input)
+    if match:
+        days = int(match.group(1))
+        return f"{days}d"
+    return ""
+
+def register_user(UserLocation, UserName, ExpiresInput):
     if contains_cyrillic(UserLocation) or contains_cyrillic(UserName):
         return "Используйте только латиницу для ввода данных."
 
     if not UserLocation or not UserName:
         return "Что-то пошло не так!"
 
-    ExpiresDate = ""
-    if ExpiresYear:
-        ExpiresDate += ExpiresYear
-    if ExpiresMonth:
-        ExpiresDate += f"-{ExpiresMonth.zfill(2)}"
-    if ExpiresDay:
-        ExpiresDate += f"-{ExpiresDay.zfill(2)}"
+    ExpiresDate = parse_expires_days(ExpiresInput)
 
     try:
         if ExpiresDate:
@@ -237,18 +245,15 @@ with gr.Blocks() as register_tab:
         UserLocation = gr.Textbox(label="Расположение пользователя", placeholder="Введите расположение пользователя латиницей")
         UserName = gr.Textbox(label="Имя пользователя", placeholder="Введите имя пользователя латиницей")
 
-        gr.Markdown("Дата истечения опциональна.")
-        with gr.Row():
-            ExpiresYear = gr.Textbox(label="Год", placeholder="Год", scale=1)
-            ExpiresMonth = gr.Textbox(label="Месяц", placeholder="Месяц", scale=1)
-            ExpiresDay = gr.Textbox(label="День", placeholder="День", scale=1)
+        gr.Markdown("Время до истечения опционально. Формат: + X d (например: +30d)")
+        ExpiresInput = gr.Textbox(label="Время до истечения", placeholder="+30d (30 дней) или оставьте пустым для бессрочного доступа")
 
         register_button = gr.Button("Зарегистрировать пользователя")
         result_output = gr.Textbox(label="Результат регистрации", interactive=False)
 
         register_button.click(
             fn=register_user,
-            inputs=[UserLocation, UserName, ExpiresYear, ExpiresMonth, ExpiresDay],
+            inputs=[UserLocation, UserName, ExpiresInput],
             outputs=result_output
         )
 
