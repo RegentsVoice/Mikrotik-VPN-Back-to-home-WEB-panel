@@ -4,146 +4,181 @@
 ![image](https://github.com/user-attachments/assets/2483ea56-386e-402b-a683-494094c92a01)
 
 
-# Mikrotik VPN Back-to-Home Web Panel
+Mikrotik VPN Back-to-Home Web Panel
+Русский | English
+Русский
+О проекте
+Mikrotik VPN Back-to-Home Web Panel — это веб-приложение для управления пользователями функции "Back to Home" на устройствах Mikrotik. Интерфейс создан с использованием библиотеки Gradio и предоставляет удобный способ регистрации, управления и настройки пользователей через браузер.
+Возможности
 
-[Русский](#русский) | [English](#english)
+Регистрация пользователей: Добавление новых пользователей с указанием имени, расположения и даты деактивации.
+Управление пользователями:
+Просмотр списка пользователей.
+Активация/деактивация пользователей.
+Удаление пользователей.
+Экспорт конфигурации пользователя.
 
-## Русский
 
-### О проекте
+Настройки: Изменение параметров подключения (IP-адрес, порт, пароль).
+Логирование: Сохранение логов в файл watchdog.log (уровень логирования: INFO).
 
-**Mikrotik VPN Back-to-Home Web Panel** — это веб-приложение для управления пользователями функции "Back to Home" на устройствах Mikrotik. Интерфейс создан с использованием библиотеки **Gradio** и предоставляет удобный способ регистрации, управления и настройки пользователей через браузер.
+Требования
 
-### Возможности
+Python: 3.10.0 (несовместимо с Python 3.12+).
+RouterOS: 7.19 (для версий ниже используйте команду /ip/cloud/back-to-home-users вместо /ip/cloud/back-to-home-user).
+Библиотеки:
+routeros_ssh_connector — для подключения к Mikrotik через SSH.
+gradio — для создания веб-интерфейса.
 
-- **Регистрация пользователей**: Добавление новых пользователей с указанием имени, расположения и даты деактивации.
-- **Управление пользователями**:
-  - Просмотр списка пользователей.
-  - Активация/деактивация пользователей.
-  - Удаление пользователей.
-  - Экспорт конфигурации пользователя.
-- **Настройки**: Изменение параметров подключения (IP-адрес, порт, пароль).
-- **Логирование**: Сохранение логов в файл `watchdog.log` (уровень логирования: INFO).
 
-### Требования
 
-- **Python**: 3.10.0 (несовместимо с Python 3.12+).
-- **RouterOS**: 7.19 (для версий ниже используйте команду `/ip/cloud/back-to-home-users` вместо `/ip/cloud/back-to-home-user`).
-- **Библиотеки**:
-  - `routeros_ssh_connector` — для подключения к Mikrotik через SSH.
-  - `gradio` — для создания веб-интерфейса.
+Установка
 
-### Установка
+Клонируйте репозиторий:git clone https://github.com/RegentsVoice/Mikrotik-VPN-Back-to-home-WEB-panel.git
 
-1. Клонируйте репозиторий:
-   ```bash
-   git clone https://github.com/RegentsVoice/Mikrotik-VPN-Back-to-home-WEB-panel.git
-   ```
-2. Установите зависимости:
-   ```bash
-   pip install routeros_ssh_connector gradio
-   ```
-3. Настройте параметры подключения в файле `mikrotik_const.py`:
-   ```python
-   RouteIP = "IP вашего устройства"
-   RouteUsername = "Имя пользователя"
-   RoutePassword = "Пароль"
-   RoutePort = "Порт"
-   ```
 
-### Запуск
+Установите зависимости:pip install routeros_ssh_connector gradio
 
-1. Запустите приложение:
-   ```bash
-   python run_web_ui.py
-   ```
-2. Откройте веб-интерфейс в браузере и войдите:
-   - **Логин**: `Admin`
-   - **Пароль**: `P@ssw0rd`
 
-### Настройка
+Настройте параметры подключения в файле mikrotik_const.py:RouteIP = "IP вашего устройства"
+RouteUsername = "Имя пользователя"
+RoutePassword = "Пароль"
+RoutePort = "Порт"
 
-Изменяйте параметры подключения (IP, порт, пароль) через вкладку **Настройки** в веб-интерфейсе. Убедитесь, что IP-адрес совпадает с адресом устройства или используйте `127.0.0.1` (для Docker — `0.0.0.0`).
 
-### Логирование
 
-Логи сохраняются в файл `watchdog.log` с уровнем логирования INFO.
+Развертывание в Docker
 
-### Лицензия
+Создайте файл Dockerfile в корневой директории проекта со следующим содержимым:FROM python:3.10-slim
+WORKDIR /app
+COPY . .
+RUN pip install routeros_ssh_connector gradio
+EXPOSE 7860
+CMD ["python", "run_web_ui.py"]
 
-Проект распространяется под лицензией [MIT License](LICENSE).
 
-### Автор
+Соберите Docker-образ:docker build -t mikrotik-vpn-panel .
 
+
+Запустите контейнер, указав параметры подключения:docker run -d -p 7860:7860 --name mikrotik-vpn-panel \
+-e RouteIP="IP вашего устройства" \
+-e RouteUsername="Имя пользователя" \
+-e RoutePassword="Пароль" \
+-e RoutePort="Порт" \
+mikrotik-vpn-panel
+
+
+Откройте веб-интерфейс в браузере по адресу http://localhost:7860 и войдите:
+Логин: Admin
+Пароль: P@ssw0rd
+
+
+
+Примечание: Убедитесь, что порт 7860 открыт и доступен. Для изменения параметров подключения используйте переменные окружения или настройте их через веб-интерфейс.
+Запуск
+
+Запустите приложение:python run_web_ui.py
+
+
+Откройте веб-интерфейс в браузере и войдите:
+Логин: Admin
+Пароль: P@ssw0rd
+
+
+
+Настройка
+Изменяйте параметры подключения (IP, порт, пароль) через вкладку Настройки в веб-интерфейсе. Убедитесь, что IP-адрес совпадает с адресом устройства или используйте 127.0.0.1 (для Docker — 0.0.0.0).
+Логирование
+Логи сохраняются в файл watchdog.log с уровнем логирования INFO.
+Лицензия
+Проект распространяется под лицензией MIT License.
+Автор
 © 2024 Regent'sVoice
+English
+About
+Mikrotik VPN Back-to-Home Web Panel is a web application for managing "Back to Home" users on Mikrotik devices. Built with Gradio, it provides a user-friendly interface for registering, managing, and configuring users via a web browser.
+Features
 
----
+User Registration: Add new users with name, location, and deactivation date.
+User Management:
+View the list of users.
+Activate/deactivate users.
+Delete users.
+Export user configurations.
 
-## English
 
-### About
+Settings: Update connection parameters (IP address, port, password).
+Logging: Logs are saved to watchdog.log with INFO level.
 
-**Mikrotik VPN Back-to-Home Web Panel** is a web application for managing "Back to Home" users on Mikrotik devices. Built with **Gradio**, it provides a user-friendly interface for registering, managing, and configuring users via a web browser.
+Requirements
 
-### Features
+Python: 3.10.0 (incompatible with Python 3.12+).
+RouterOS: 7.19 (for older versions, use /ip/cloud/back-to-home-users instead of /ip/cloud/back-to-home-user).
+Dependencies:
+routeros_ssh_connector — for SSH connection to Mikrotik.
+gradio — for creating the web interface.
 
-- **User Registration**: Add new users with name, location, and deactivation date.
-- **User Management**:
-  - View the list of users.
-  - Activate/deactivate users.
-  - Delete users.
-  - Export user configurations.
-- **Settings**: Update connection parameters (IP address, port, password).
-- **Logging**: Logs are saved to `watchdog.log` with INFO level.
 
-### Requirements
 
-- **Python**: 3.10.0 (incompatible with Python 3.12+).
-- **RouterOS**: 7.19 (for older versions, use `/ip/cloud/back-to-home-users` instead of `/ip/cloud/back-to-home-user`).
-- **Dependencies**:
-  - `routeros_ssh_connector` — for SSH connection to Mikrotik.
-  - `gradio` — for creating the web interface.
+Installation
 
-### Installation
+Clone the repository:git clone https://github.com/RegentsVoice/Mikrotik-VPN-Back-to-home-WEB-panel.git
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/RegentsVoice/Mikrotik-VPN-Back-to-home-WEB-panel.git
-   ```
-2. Install dependencies:
-   ```bash
-   pip install routeros_ssh_connector gradio
-   ```
-3. Configure connection settings in `mikrotik_const.py`:
-   ```python
-   RouteIP = "Your device IP"
-   RouteUsername = "Username"
-   RoutePassword = "Password"
-   RoutePort = "Port"
-   ```
 
-### Usage
+Install dependencies:pip install routeros_ssh_connector gradio
 
-1. Run the application:
-   ```bash
-   python run_web_ui.py
-   ```
-2. Open the web interface in your browser and log in:
-   - **Login**: `Admin`
-   - **Password**: `P@ssw0rd`
 
-### Configuration
+Configure connection settings in mikrotik_const.py:RouteIP = "Your device IP"
+RouteUsername = "Username"
+RoutePassword = "Password"
+RoutePort = "Port"
 
-Update connection parameters (IP, port, password) via the **Settings** tab in the web interface. Ensure the IP matches the device’s address or use `127.0.0.1` (for Docker, use `0.0.0.0`).
 
-### Logging
 
-Logs are stored in `watchdog.log` with INFO level logging.
+Docker Deployment
 
-### License
+Create a Dockerfile in the project root directory with the following content:FROM python:3.10-slim
+WORKDIR /app
+COPY . .
+RUN pip install routeros_ssh_connector gradio
+EXPOSE 7860
+CMD ["python", "run_web_ui.py"]
 
-This project is licensed under the [MIT License](LICENSE).
 
-### Author
+Build the Docker image:docker build -t mikrotik-vpn-panel .
 
+
+Run the container, specifying connection parameters:docker run -d -p 7860:7860 --name mikrotik-vpn-panel \
+-e RouteIP="Your device IP" \
+-e RouteUsername="Username" \
+-e RoutePassword="Password" \
+-e RoutePort="Port" \
+mikrotik-vpn-panel
+
+
+Open the web interface in your browser at http://localhost:7860 and log in:
+Login: Admin
+Password: P@ssw0rd
+
+
+
+Note: Ensure port 7860 is open and accessible. Use environment variables or the web interface to modify connection parameters.
+Usage
+
+Run the application:python run_web_ui.py
+
+
+Open the web interface in your browser and log in:
+Login: Admin
+Password: P@ssw0rd
+
+
+
+Configuration
+Update connection parameters (IP, port, password) via the Settings tab in the web interface. Ensure the IP matches the device’s address or use 127.0.0.1 (for Docker, use 0.0.0.0).
+Logging
+Logs are stored in watchdog.log with INFO level logging.
+License
+This project is licensed under the MIT License.
+Author
 © 2024 Regent'sVoice
