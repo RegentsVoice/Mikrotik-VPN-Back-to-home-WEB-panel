@@ -1,5 +1,3 @@
-# Mikrotik VPN Back to home WEB panel
-
 ![image](https://github.com/user-attachments/assets/4d4ca552-affb-4439-b31d-5f50cf703380)
 ![image](https://github.com/user-attachments/assets/2483ea56-386e-402b-a683-494094c92a01)
 
