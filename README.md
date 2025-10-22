@@ -65,11 +65,7 @@ Mikrotik VPN Back-to-Home Web Panel — это веб-приложение дл�
    ```
 3. Запустите контейнер, указав параметры подключения:
    ```
-   docker run -d -p 7860:7860 --name mikrotik-vpn-panel \
-   -e RouteIP="IP вашего устройства" \
-   -e RouteUsername="Имя пользователя" \
-   -e RoutePassword="Пароль" \
-   -e RoutePort="Порт" \
+   docker run -d -p 7862:7862 --name mikrotik-vpn-panel \
    mikrotik-vpn-panel
    ```
 4. Откройте веб-интерфейс в браузере по адресу `http://localhost:7860` и войдите:
@@ -164,11 +160,7 @@ Mikrotik VPN Back-to-Home Web Panel is a web application for managing "Back to H
    ```
 3. Run the container, specifying connection parameters:
    ```
-   docker run -d -p 7860:7860 --name mikrotik-vpn-panel \
-   -e RouteIP="Your device IP" \
-   -e RouteUsername="Username" \
-   -e RoutePassword="Password" \
-   -e RoutePort="Port" \
+   docker run -d -p 7862:7862 --name mikrotik-vpn-panel \
    mikrotik-vpn-panel
    ```
 4. Open the web interface in your browser at `http://localhost:7860` and log in:
