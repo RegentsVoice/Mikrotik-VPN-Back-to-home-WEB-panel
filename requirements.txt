@@ -1,4 +1,7 @@
 gradio>=4.0.0
 paramiko>=3.0.0
 scp>=0.14.0
-routeros_ssh_connector
+textfsm==1.1.0
+netmiko==3.4.0
+routeros-ssh-connector
+
