@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/4d4ca552-affb-4439-b31d-5f50cf703380)
+![image](https://github.com/user-attachments/assets/b9d96910-1e4d-42b4-bdb2-92b7e9b3450f)
 ![image](https://github.com/user-attachments/assets/2483ea56-386e-402b-a683-494094c92a01)
 
 # Mikrotik VPN Back-to-Home Web Panel
