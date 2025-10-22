@@ -257,8 +257,8 @@ with gr.Blocks() as register_tab:
         UserLocation = gr.Textbox(label="Расположение пользователя", placeholder="Введите расположение пользователя латиницей")
         UserName = gr.Textbox(label="Имя пользователя", placeholder="Введите имя пользователя латиницей")
 
-        gr.Markdown("Время до истечения опционально. Формат: + X d (например: +30d)")
-        ExpiresInput = gr.Textbox(label="Время до истечения", placeholder="+30d (30 дней) или оставьте пустым для бессрочного доступа")
+        gr.Markdown("Время до истечения опционально.")
+        ExpiresInput = gr.Textbox(label="Время до истечения", placeholder="30 (30 дней) или оставьте пустым для бессрочного доступа")
 
         register_button = gr.Button("Зарегистрировать пользователя")
         result_output = gr.Textbox(label="Результат регистрации", interactive=False)
