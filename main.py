@@ -25,11 +25,25 @@ def parse_expires_days(expires_input):
         return ""
         
     expires_input = expires_input.strip().lower()
-    
     match = re.match(r'^\+\s*(\d+)\s*d$', expires_input)
     if match:
         days = int(match.group(1))
-        return f"{days}d"
+        return f"{days}d" if days > 0 else ""
+
+    if re.match(r'^\d+$', expires_input):
+        days = int(expires_input)
+        return f"{days}d" if days > 0 else ""
+
+    match = re.match(r'^(\d+)\s*d$', expires_input)
+    if match:
+        days = int(match.group(1))
+        return f"{days}d" if days > 0 else ""
+
+    match = re.match(r'^(\d+)\s*days?$', expires_input)
+    if match:
+        days = int(match.group(1))
+        return f"{days}d" if days > 0 else ""
+    
     return ""
 
 def register_user(UserLocation, UserName, ExpiresInput):
